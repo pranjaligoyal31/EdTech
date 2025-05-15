@@ -54,7 +54,9 @@ exports.resetPassowrdToken = async (req, res) => {
 //resetPassword
 
 exports.resetPassword = async (req, res)=> {
-    //data fetch
+
+    try {
+        //data fetch
     const {password, confirmPassword, token} = req.body; 
     //validation
     if(password !== confirmPassword) {
@@ -64,7 +66,7 @@ exports.resetPassword = async (req, res)=> {
         });
     }
     //get user details from db using token
-    const userDetails = await user.findOne({token: token});
+    const userDetails = await User.findOne({token: token});
     //if no entry found-> invalid token
     if(!userDetails) {
         return res.json({
@@ -93,5 +95,9 @@ exports.resetPassword = async (req, res)=> {
         success:true,
         message:'Password reset successful',
     });
+    } 
+    catch (error) {
+        
+    }
 
 }
