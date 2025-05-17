@@ -13,7 +13,7 @@ exports.createSubSection=async (req,res)=>{
         if(!sectionId||!title||!description||!video){
             return res.status(400).json({
                 success:false,
-                message:'All fileds are required'
+                message:'All fields are required'
             })
         }
         //upload video to cloudinary
