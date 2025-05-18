@@ -3,7 +3,10 @@ const OTP = require("../models/OTP");
 const otpGenerator = require("otp-generator");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const mailSender=require('../utils/mailSender')
+const Profile=require('../models/Profile')
 require("dotenv").config();
+
 
 
 //send otp
@@ -32,30 +35,28 @@ exports.sendOTP = async (req,res) => {
     console.log("OTP generated: ", otp);
 
     //check unique otp or not
-    const result = await OTP.findOne({otp: otp});
+    let result = await OTP.findOne({otp: otp});
+        while(result) {
+            otp = otpGenerator.generate(6, { 
+                upperCaseAlphabets:false,
+                lowerCaseAlphabets:false,
+                specialChars:false,
+            });
+            result = await OTP.findOne({otp: otp}); 
+        }
 
-    while(result) {
-        otp=otpGenerator({
-            upperCaseAlphabets:false,
-            lowerCaseAlphabets:false,
-            specialChars:false,
-        });
-        result = await OTP.findOne({otp: otp});
-    }
+        const otpPayload = {email, otp};
 
+        const otpBody = await OTP.create(otpPayload);
+        console.log(otpBody);
 
-    const otpPayload = {email, otp};
+        await mailSender(email, "Verification OTP", `Your OTP is: ${otp}`);
 
-    //create an entry for OTP
-    const otpBody = await OTP.create(otpPayload);
-    console.log(otpBody);
-
-    //return response successful
-    res.status(200).json({
-        success:true,
-        message:"OTP sent successfully",
-        otp,
-    })
+        res.status(200).json({
+            success:true,
+            message:"OTP sent successfully",
+            otp,
+        })
 }
 catch(error){
     console.log(error);
@@ -173,7 +174,7 @@ exports.login = async (req,res) => {
         //get data from req ki body
         const {email, password} = req.body;
         //validation data
-        if(!email || password) {
+        if(!email || !password) {
             return  res.status(403).json({
                 success:false,
                 message:'All fields are required, please try again',
@@ -228,7 +229,6 @@ exports.login = async (req,res) => {
         });
     }
 };
-
 
 //changepassword
 exports.changePassword = async (req,res) => {
