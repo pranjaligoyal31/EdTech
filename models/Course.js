@@ -44,7 +44,7 @@ const courseSchema = new mongoose.Schema({
     studentsEnrolled: [{
         type:mongoose.Schema.Types.ObjectId,
         required:true,
-        ref:"User,"
+        ref:"User",
     },
 ],
     instructions: {
@@ -56,4 +56,4 @@ const courseSchema = new mongoose.Schema({
     },
 });
 
-module.exports = mongoose.model("Course",courseSchema);
+module.exports = mongoose.models.Course || mongoose.model("Course", courseSchema);

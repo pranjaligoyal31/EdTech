@@ -46,7 +46,7 @@ const {auth,isInstructor,isStudent,isAdmin}=require('../middlewares/auth')
 //course routes
 
 //courses can only be craeted by instructors
-router.post('/craeteCourse',auth,isInstructor,createCourse)
+router.post('/createCourse',auth,isInstructor,createCourse)
 //add a section to course
 router.post('/addSection',auth,isInstructor,createSection)
 //update a section 
@@ -63,8 +63,6 @@ router.post('/addSubSection',auth,isInstructor,createSubSection)
 router.get('/getAllCourses',getAllCourses)
 //get details for specific courses
 router.post('/getCourseDetails',getCourseDetails)
-
-
 
 router.post("/createCategory", auth, isAdmin, createCategory)
 router.get("/showAllCategories", showAllCategories)
