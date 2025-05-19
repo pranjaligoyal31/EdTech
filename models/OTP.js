@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const mailSender=require('../utils/mailSender')
 
 const OTPSchema = new mongoose.Schema({
     email:{
@@ -9,9 +10,9 @@ const OTPSchema = new mongoose.Schema({
         type:String,
         required:true,
     },
-    createedAt:{
+    createdAt:{
         type:Date,
-        default:Date.now(),
+        default:Date.now,
         expires: 5*60,
     }
 });
@@ -28,7 +29,7 @@ async function sendVerificationEmail(email, otp) {
     }
 }
 
-//using pre-middleware (to send the mail for otp verification before creating the databse of the user without verification)
+//using pre-middleware (to send the mail for otp verification before creating the database of the user without verification)
 OTPSchema.pre("save", async function(next) {
     await sendVerificationEmail(this.email, this.otp);
     next();

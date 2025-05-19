@@ -1,7 +1,7 @@
 const Profile=require('../models/Profile')
 const User=require('../models/User')
-const CourseProgress = require('../models/courseProgress')
-const Course = require('../models/course')
+const CourseProgress = require('../models/CourseProgress')
+const Course = require('../models/Course')
 
 
 exports.updateProfile=async(req,res)=>{
