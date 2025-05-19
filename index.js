@@ -31,11 +31,11 @@ app.use(
 )
 //cloudinary connection
 cloudinaryConnect()
-app.use('/api/user', userRoutes)
-app.use('/api/profile', profileRoutes)
-app.use('/api/course', courseRoutes)
+app.use('/api/v1/auth', userRoutes)
+app.use('/api/v1/profile', profileRoutes)
+app.use('/api/v1/course', courseRoutes)
 //routes
-app.use('/',(req,res)=>{
+app.get('/',(req,res)=>{
     return res.json({
         success:true,
         message:"Your server is up and running..."
