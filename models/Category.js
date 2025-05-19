@@ -16,4 +16,4 @@ const categorySchema = new mongoose.Schema({
 ],
 });
 //export the tags model
-module.exports = mongoose.model("Tag",tagsSchema);
+module.exports = mongoose.model("Category",categorySchema);
