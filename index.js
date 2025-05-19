@@ -31,7 +31,9 @@ app.use(
 )
 //cloudinary connection
 cloudinaryConnect()
-
+app.use('/api/user', userRoutes)
+app.use('/api/profile', profileRoutes)
+app.use('/api/course', courseRoutes)
 //routes
 app.use('/',(req,res)=>{
     return res.json({
