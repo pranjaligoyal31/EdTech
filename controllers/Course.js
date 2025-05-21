@@ -1,7 +1,8 @@
 const Course=require('../models/Course')
 const Category=require('../models/Category')
+const SubSection=require('../models/SubSection')
 const User=require('../models/User')
-const {uploadImageToCLoudinary}=require('../utils/imageUploader')
+const {uploadImageToCloudinary}=require('../utils/imageUploader')
 const CourseProgress=require('../models/CourseProgress')
 
 //createCourse handler function
@@ -11,11 +12,12 @@ exports.createCourse = async (req, res) => {
         let { courseName, courseDescription, whatYouWillLearn, price, category, instructions: _instructions, status, tag: _tag } = req.body;
 
         // Convert the tag and instructions from stringified Array to Array
-        const tag = JSON.parse(_tag)
-        const instructions = JSON.parse(_instructions)
+        const tag = typeof _tag === 'string' ? JSON.parse(_tag) : _tag || [];
+        const instructions = typeof _instructions === 'string' ? JSON.parse(_instructions) : _instructions || [];
 
-        // console.log("tag = ", tag)
-        // console.log("instructions = ", instructions)
+
+        console.log("tag = ", tag)
+        console.log("instructions = ", instructions)
 
         // get thumbnail of course
         const thumbnail = req.files?.thumbnailImage;
@@ -146,6 +148,7 @@ exports.getCourseDetails = async (req, res) => {
                 path: "courseContent",
                 populate: {
                     path: "subSection",
+                    model: "SubSection",
                 },
             })
             .exec();
